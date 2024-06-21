@@ -1,5 +1,3 @@
-#### before you can use this you will need to search for the met office forecast data from the market place and get the data :)
-
 # Import python packages
 import streamlit as st
 from snowflake.snowpark.context import get_active_session
@@ -60,6 +58,7 @@ if submit_forecast:
 
     #### filter the data to the chosen postcode sector - the format is like this - SN25_2
 
+
     weather_filter = weather.filter((col('PC_SECT')==sector) & (col('"Issued_at"')==weather_max))
     weather_filterpd = weather_filter.to_pandas()
 
@@ -90,7 +89,7 @@ if submit_forecast:
     ##### create an LLM prompt which includes the data object
     prompt = concat(lit('Can you explain to me what the weather is like based on this data'),
                     col('object').astype(StringType()),
-                   lit('add weather related emojis to the generated text to help illustrate the text further'))
+                   lit('as you explain, incorporate weather related emojis to the generated text to help illustrate the text further'))
     
     
     # construct the cortex.complete function - this will run based on the chosen model
@@ -187,3 +186,6 @@ if submit_forecast:
              y=["day",
                 "night"
                ])
+
+
+
