@@ -33,9 +33,9 @@ session = get_active_session()
 with st.form('weather'):
     col1,col2 = st.columns(2)
     with col1:
-        sector = st.text_input('Postcode Sector: ','DY13_9')
+        sector = st.selectbox('Postcode Sector: ',['EX1_3'])
     with col2:
-        model = 'mixtral-8x7b','reka-flash', 'gemma-7b','llama2-70b-chat'
+        model = 'reka-flash','mixtral-8x7b', 'gemma-7b','llama2-70b-chat'
         select_model = st.selectbox('Choose Model',model)
     submit_forecast = st.form_submit_button('View the Forecast')
 
@@ -46,7 +46,7 @@ if submit_forecast:
     ##### grab the met office table - you need to get it from the market place first.
 
     
-    weather = session.table('POSTCODE_SECTOR_WEATHER_FORECASTS.BD1_BETA."advanced_with_solar_daily_view"')
+    weather = session.table('POSTCODE_SECTOR_WEATHER_FORECASTS.BD1_BETA.DATA_SAMPLE_DAILY')
 
     #### find the latest time that the forecast was issued at
     weather_max = weather.agg(max('"Issued_at"')).collect()[0][0]
