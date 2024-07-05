@@ -60,11 +60,13 @@ if submit_forecast:
 
 
     weather_filter = weather.filter((col('PC_SECT')==sector) & (col('"Issued_at"')==weather_max))
+
+    validity_data_max = weather_filter.agg(max('"Validity_date"'))
     weather_filterpd = weather_filter.to_pandas()
 
 
     ##### filter to view todays weather forecast
-    today = weather_filter.filter(col('"Validity_date"')==current_date())
+    today = weather_filter.filter(col('"Validity_date"')==validity_data_max.collect()[0][0])
 
     st.caption('This is the live uptodate weather forecast for today')
 
@@ -186,6 +188,3 @@ if submit_forecast:
              y=["day",
                 "night"
                ])
-
-
-
